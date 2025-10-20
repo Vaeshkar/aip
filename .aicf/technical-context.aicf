@@ -1,0 +1,25 @@
+@TECHNICAL_CONTEXT
+@SCHEMA
+TC#|CATEGORY|KEY|VALUE|DESCRIPTION
+
+@DATA
+1|LANGUAGE|primary|TypeScript|Main programming language for the project
+2|FRAMEWORK|main|Node.js|Runtime environment
+3|ARCHITECTURE|pattern|Client-Server Protocol|JSON-RPC 2.0 based protocol for AI services
+4|PROTOCOL|base|JSON-RPC 2.0|Message format for requests and responses
+5|TRANSPORT|http|Express.js|HTTP transport implementation
+6|TRANSPORT|websocket|ws|WebSocket transport (planned)
+7|TRANSPORT|stdio|Node streams|Stdio transport (planned)
+8|CONTEXT_FORMAT|native|AICF|AI Context Format for structured data
+9|TESTING|framework|Jest|Testing framework (to be implemented)
+10|BUILD|tool|TypeScript Compiler|Build system
+11|DEPENDENCIES|package_manager|npm|Package manager
+12|INTEGRATION|aicf|aicf-core|Integration with AICF ecosystem
+
+@NOTES
+- TC# should be incremental numbers
+- CATEGORY: Groups related technical context (LANGUAGE, FRAMEWORK, ARCHITECTURE, etc.)
+- KEY: Specific aspect within the category
+- VALUE: The actual technology, tool, or approach used
+- DESCRIPTION: Brief explanation of why this choice or how it's used
+- Add more entries as your tech stack evolves

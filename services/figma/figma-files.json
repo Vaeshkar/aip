@@ -1,0 +1,42 @@
+{
+  "$schema": "./figma-files.schema.json",
+  "files": [
+    {
+      "id": "design-system",
+      "name": "Design System",
+      "fileKey": "dBskzKqYHcXobkKzF7XhMA",
+      "description": "Main design system with components and tokens",
+      "tags": ["design-system", "components", "tokens"]
+    },
+    {
+      "id": "landing-page",
+      "name": "Landing Page",
+      "fileKey": "k9vFQqZRzJxYmN3pL2wQ8R",
+      "description": "Marketing landing page designs",
+      "tags": ["marketing", "web"]
+    },
+    {
+      "id": "mobile-app",
+      "name": "Mobile App",
+      "fileKey": "pL2wQ8Rk9vFQqZRzJxYmN3",
+      "description": "Mobile app UI designs",
+      "tags": ["mobile", "app"]
+    }
+  ],
+  "teams": [
+    {
+      "id": "main-team",
+      "name": "Main Team",
+      "teamId": "123456789012345678",
+      "description": "Primary design team"
+    }
+  ],
+  "projects": [
+    {
+      "id": "web-project",
+      "name": "Web Project",
+      "projectId": "987654321",
+      "description": "Web application designs"
+    }
+  ]
+}

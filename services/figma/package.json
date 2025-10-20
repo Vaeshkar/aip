@@ -1,0 +1,38 @@
+{
+  "name": "@vaeshkar/aip-figma",
+  "version": "1.0.0",
+  "description": "Figma service implementation using AIP (AI-Protocol)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "aip-figma": "./dist/index.js",
+    "aip-figma-cli": "./dist/cli.js"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "aip",
+    "ai-protocol",
+    "figma",
+    "design",
+    "api"
+  ],
+  "author": "Digital Liquids (Dennis van Leeuwen)",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "@digital-liquids/aip-workspace": "file:../..",
+    "@digital-liquids/aicf-core": "file:../../../aicf-core",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  }
+}

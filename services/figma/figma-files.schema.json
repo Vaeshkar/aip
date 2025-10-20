@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Figma Files Configuration",
+  "description": "Configuration for Figma files, teams, and projects",
+  "type": "object",
+  "properties": {
+    "files": {
+      "type": "array",
+      "description": "List of Figma files",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this file"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name"
+          },
+          "fileKey": {
+            "type": "string",
+            "description": "Figma file key (from URL)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the file"
+          },
+          "tags": {
+            "type": "array",
+            "description": "Tags for categorization",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["id", "name", "fileKey"]
+      }
+    },
+    "teams": {
+      "type": "array",
+      "description": "List of Figma teams",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this team"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name"
+          },
+          "teamId": {
+            "type": "string",
+            "description": "Figma team ID"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the team"
+          }
+        },
+        "required": ["id", "name", "teamId"]
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "List of Figma projects",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this project"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "Figma project ID"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the project"
+          }
+        },
+        "required": ["id", "name", "projectId"]
+      }
+    }
+  }
+}
+
