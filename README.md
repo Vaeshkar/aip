@@ -318,17 +318,16 @@ If you use this software over a network, you must make the source code available
 ## 🙏 Acknowledgments
 
 - **Anthropic** for creating MCP and inspiring this project
-- **AICF Community** for the AI Context Format
-- **Digital Liquids** for sponsoring development
+- **Microsoft** for Playwright and Playwright MCP
+- **The open source community** for making this possible
 
 ---
 
 ## 📞 Contact
 
-- **Author**: Dennis van Leeuwen (Digital Liquids)
-- **Email**: dennis@digital-liquids.com
+- **Author**: Dennis van Leeuwen
 - **GitHub**: [@Vaeshkar](https://github.com/Vaeshkar)
-- **Website**: [digital-liquids.com](https://digital-liquids.com)
+- **Website**: [minusnine.io](https://www.minusnine.io)
 
 ---
 
@@ -365,4 +364,4 @@ If you use this software over a network, you must make the source code available
 
 ---
 
-**Built with ❤️ by Digital Liquids**
+**Built with ❤️ by Dennis van Leeuwen**
