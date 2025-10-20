@@ -327,7 +327,7 @@ If you use this software over a network, you must make the source code available
 
 - **Author**: Dennis van Leeuwen
 - **GitHub**: [@Vaeshkar](https://github.com/Vaeshkar)
-- **Website**: [minusnine.io](https://www.minusnine.io)
+- **Website**: [www.minusnine.io](https://www.minusnine.io)
 
 ---
 
