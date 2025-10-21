@@ -1,7 +1,7 @@
 {
   "name": "@vaeshkar/aip-playwright",
-  "version": "1.0.0",
-  "description": "AIP service for browser automation using Playwright (wraps Playwright MCP)",
+  "version": "2.0.0",
+  "description": "AIP service for browser automation using Playwright with AICF-RPC support (wraps Playwright MCP)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
