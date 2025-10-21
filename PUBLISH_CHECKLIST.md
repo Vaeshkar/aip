@@ -9,7 +9,7 @@ Quick checklist to get AIP published and online!
 - ✅ Git repository initialized
 - ✅ Connected to `git@github.com:Vaeshkar/aip.git`
 - ✅ Figma service built and tested
-- ✅ Package renamed to `@digital-liquids/aip-figma`
+- ✅ Package renamed to `@vaeshkar/aip-figma`
 - ✅ CLI command `aip-figma` configured
 - ✅ Shebang added for executable
 - ✅ AGPL-3.0 license applied
@@ -91,7 +91,7 @@ npm publish --access public
 
 ```bash
 # Install globally
-npm install -g @digital-liquids/aip-figma
+npm install -g @vaeshkar/aip-figma
 
 # Set environment variable
 export FIGMA_API_KEY=your_token_here
@@ -151,15 +151,15 @@ git push
 - [ ] No sensitive data in code
 
 ### **Before Publishing to npm**:
-- [ ] Package name is correct: `@digital-liquids/aip-figma`
+- [ ] Package name is correct: `@vaeshkar/aip-figma`
 - [ ] Version is correct: `1.0.0`
 - [ ] License is correct: `AGPL-3.0-or-later`
 - [ ] `dist/` folder exists and has compiled code
 - [ ] README is up to date
 
 ### **After Publishing**:
-- [ ] Check npm page: https://www.npmjs.com/package/@digital-liquids/aip-figma
-- [ ] Test global install: `npm install -g @digital-liquids/aip-figma`
+- [ ] Check npm page: https://www.npmjs.com/package/@vaeshkar/aip-figma
+- [ ] Test global install: `npm install -g @vaeshkar/aip-figma`
 - [ ] Test CLI command: `aip-figma`
 
 ---
@@ -210,7 +210,7 @@ Architecture:
 - Direct file key access (no config files needed)
 
 Services:
-- @digital-liquids/aip-figma (v1.0.0)
+- @vaeshkar/aip-figma (v1.0.0)
 
 Documentation:
 - Complete README with examples
@@ -246,10 +246,10 @@ Unlike MCP (Claude-only), AIP works with ANY LLM:
 
 First service: Figma! 🎨
 
-npm install -g @digital-liquids/aip-figma
+npm install -g @vaeshkar/aip-figma
 
 GitHub: https://github.com/Vaeshkar/aip
-npm: https://www.npmjs.com/package/@digital-liquids/aip-figma
+npm: https://www.npmjs.com/package/@vaeshkar/aip-figma
 
 #AI #OpenSource #Figma #LLM
 ```

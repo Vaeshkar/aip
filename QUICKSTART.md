@@ -140,7 +140,7 @@ curl -X POST http://localhost:3000/aip/v1/rpc \
 ## Creating Your Own Server
 
 ```typescript
-import { AIPServer, HTTPTransport } from '@digital-liquids/aip-core';
+import { AIPServer, HTTPTransport } from '@vaeshkar/aip-core';
 
 // Create server
 const server = new AIPServer({
@@ -177,7 +177,7 @@ transport.listen(3000);
 ## Creating Your Own Client
 
 ```typescript
-import { AIPClient } from '@digital-liquids/aip-core';
+import { AIPClient } from '@vaeshkar/aip-core';
 
 // Create client
 const client = new AIPClient({

@@ -60,10 +60,10 @@ This service provides the same capabilities as Figma's MCP server, but using the
 
 ```bash
 # Install globally
-npm install -g @digital-liquids/aip-figma
+npm install -g @vaeshkar/aip-figma
 
 # Or use with npx
-npx @digital-liquids/aip-figma --figma-token=YOUR_TOKEN
+npx @vaeshkar/aip-figma --figma-token=YOUR_TOKEN
 ```
 
 ### From Source
@@ -81,16 +81,19 @@ export FIGMA_API_KEY=your_figma_api_key
 npm start
 ```
 
-The service will start on `http://localhost:3001/aip/v1/rpc`
+The service will start with **dual protocol support**:
+
+- **JSON-RPC**: `http://localhost:3001/aip/v1/rpc`
+- **AICF-RPC**: `http://localhost:3001/aip/v1/aicf` (75% fewer tokens!)
 
 ---
 
 ## 📖 Usage
 
-### With AIP Client
+### With JSON-RPC (Human-Friendly)
 
 ```typescript
-import { AIPClient } from "@digital-liquids/aip-core";
+import { AIPClient } from "@vaeshkar/aip-core";
 
 const client = new AIPClient({
   url: "http://localhost:3001/aip/v1/rpc",
@@ -106,7 +109,7 @@ const result = await client.invokeTool("figma.getFile", {
 console.log(result.data);
 ```
 
-### With curl
+### With curl (JSON-RPC)
 
 ```bash
 # Get a Figma file
@@ -124,6 +127,29 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
     }
   }'
 ```
+
+### With AICF-RPC (AI-Optimized) 🚀
+
+**75% fewer tokens than JSON-RPC!**
+
+```bash
+# List all tools
+curl -X POST http://localhost:3001/aip/v1/aicf \
+  -H "Content-Type: text/plain" \
+  -d "LIST"
+
+# Get tool info
+curl -X POST http://localhost:3001/aip/v1/aicf \
+  -H "Content-Type: text/plain" \
+  -d "INFO|figma.getFile"
+
+# Get a Figma file
+curl -X POST http://localhost:3001/aip/v1/aicf \
+  -H "Content-Type: text/plain" \
+  -d "CALL|figma.getFile|your-file-key"
+```
+
+**Learn more:** [AICF-RPC Documentation](../../docs/AICF-RPC-README.md)
 
 ---
 
@@ -224,4 +250,4 @@ See [LICENSE](LICENSE) for full details.
 
 ---
 
-**Built with ❤️ by Digital Liquids using AIP (AI-Protocol)**
+**Built with ❤️ by Dennis van Leeuwen using AIP (AI-Protocol)**

@@ -96,7 +96,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 ### Option C: Using AIP Client (TypeScript)
 
 ```typescript
-import { AIPClient } from '@digital-liquids/aip-workspace';
+import { AIPClient } from '@vaeshkar/aip-core';
 
 const client = new AIPClient({
   url: 'http://localhost:3001/aip/v1/rpc',

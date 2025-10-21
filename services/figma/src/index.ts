@@ -9,11 +9,9 @@
  */
 
 import * as dotenv from "dotenv";
-import {
-  AIPServer,
-  HTTPTransport,
-  ToolCapability,
-} from "@digital-liquids/aip-workspace";
+import { AIPServer } from "./server/AIPServer";
+import { HTTPTransport } from "./transport/HTTPTransport";
+import type { ToolCapability } from "./schema/aip-schema";
 import { FigmaClient } from "./figma-client";
 
 // Load environment variables

@@ -71,13 +71,13 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 Install the AIP client in your project:
 
 ```bash
-npm install @digital-liquids/aip-workspace
+npm install @vaeshkar/aip-core
 ```
 
 Then use it:
 
 ```typescript
-import { AIPClient } from '@digital-liquids/aip-workspace';
+import { AIPClient } from '@vaeshkar/aip-core';
 
 const client = new AIPClient({
   url: 'http://localhost:3001/aip/v1/rpc',

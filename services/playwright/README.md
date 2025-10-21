@@ -21,10 +21,10 @@ This service bridges [Microsoft's Playwright MCP](https://github.com/microsoft/p
 
 ```bash
 # Install from npm
-npm install -g @digital-liquids/aip-playwright
+npm install -g @vaeshkar/aip-playwright
 
 # Or use with npx
-npx @digital-liquids/aip-playwright
+npx @vaeshkar/aip-playwright
 ```
 
 ### **Install from Source**
@@ -46,9 +46,11 @@ The service will:
 
 1. Start Playwright MCP server internally (port 8932)
 2. Connect to it via MCP SDK
-3. Expose AIP HTTP interface (port 3002)
+3. Expose AIP HTTP interface with **dual protocol support**:
+   - **JSON-RPC**: `http://localhost:3002/aip/v1/rpc`
+   - **AICF-RPC**: `http://localhost:3002/aip/v1/aicf` (75% fewer tokens!)
 
-### **Test**
+### **Test with JSON-RPC**
 
 ```bash
 # Navigate to a webpage
@@ -81,6 +83,29 @@ curl -X POST http://localhost:3002/aip/v1/rpc \
     }
   }'
 ```
+
+### **Test with AICF-RPC (AI-Optimized)** 🚀
+
+**75% fewer tokens than JSON-RPC!**
+
+```bash
+# List all tools
+curl -X POST http://localhost:3002/aip/v1/aicf \
+  -H "Content-Type: text/plain" \
+  -d "LIST"
+
+# Navigate to a webpage
+curl -X POST http://localhost:3002/aip/v1/aicf \
+  -H "Content-Type: text/plain" \
+  -d "CALL|playwright.navigate|https://example.com"
+
+# Take a screenshot
+curl -X POST http://localhost:3002/aip/v1/aicf \
+  -H "Content-Type: text/plain" \
+  -d "CALL|playwright.take_screenshot|screenshot.png"
+```
+
+**Learn more:** [AICF-RPC Documentation](../../docs/AICF-RPC-README.md)
 
 ---
 
@@ -319,7 +344,7 @@ npm publish --access public
 Then install globally:
 
 ```bash
-npm install -g @digital-liquids/aip-playwright
+npm install -g @vaeshkar/aip-playwright
 aip-playwright
 ```
 

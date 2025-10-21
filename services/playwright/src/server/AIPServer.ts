@@ -35,6 +35,17 @@ import {
 
 import { AIPErrorCode } from "../schema/aip-schema";
 
+import {
+  parseAICFRequest,
+  serializeAICFResponse,
+  serializeToolList,
+  serializeToolInfo,
+  createSuccessResponse,
+  createErrorResponse,
+  type AICFRequest,
+  type AICFResponse,
+} from "../utils/aicf-rpc";
+
 /**
  * Tool handler function
  */
@@ -276,6 +287,137 @@ export class AIPServer {
         { originalError: error }
       );
     }
+  }
+
+  /**
+   * Handle AICF-RPC request
+   */
+  async handleAICFRequest(input: string): Promise<string> {
+    try {
+      // Parse AICF request
+      const request = parseAICFRequest(input);
+
+      // Route to appropriate handler
+      let response: AICFResponse;
+
+      switch (request.command) {
+        case "LIST":
+          // List all tools
+          const toolNames = Array.from(this.tools.keys());
+          return serializeToolList(toolNames);
+
+        case "INFO":
+          // Get tool info
+          if (!request.tool) {
+            response = createErrorResponse(400, "Missing tool name");
+            break;
+          }
+
+          const toolInfo = this.tools.get(request.tool);
+          if (!toolInfo) {
+            response = createErrorResponse(
+              404,
+              `Tool not found: ${request.tool}`
+            );
+            break;
+          }
+
+          // Extract argument info from schema
+          const args: Array<{ name: string; type: string }> = [];
+          if (toolInfo.capability.schema?.properties) {
+            for (const [name, prop] of Object.entries(
+              toolInfo.capability.schema.properties
+            )) {
+              const propType = (prop as any).type || "any";
+              args.push({ name, type: propType });
+            }
+          }
+
+          return serializeToolInfo(
+            toolInfo.capability.name,
+            toolInfo.capability.description || "",
+            args
+          );
+
+        case "CALL":
+          // Invoke tool
+          if (!request.tool) {
+            response = createErrorResponse(400, "Missing tool name");
+            break;
+          }
+
+          const tool = this.tools.get(request.tool);
+          if (!tool) {
+            response = createErrorResponse(
+              404,
+              `Tool not found: ${request.tool}`
+            );
+            break;
+          }
+
+          try {
+            // Convert array arguments to object based on schema
+            const argsObject = this.convertArrayToObject(
+              request.arguments || [],
+              tool.capability.schema
+            );
+
+            const result = await tool.handler(argsObject);
+            response = createSuccessResponse(result);
+          } catch (error) {
+            response = createErrorResponse(
+              500,
+              error instanceof Error ? error.message : "Tool execution failed"
+            );
+          }
+          break;
+
+        default:
+          response = createErrorResponse(
+            400,
+            `Unknown command: ${request.command}`
+          );
+      }
+
+      return serializeAICFResponse(response);
+    } catch (error) {
+      // Parse error or other error
+      const response = createErrorResponse(
+        400,
+        error instanceof Error ? error.message : "Invalid AICF request"
+      );
+      return serializeAICFResponse(response);
+    }
+  }
+
+  /**
+   * Convert array arguments to object based on schema
+   */
+  private convertArrayToObject(
+    args: any[],
+    schema?: { properties?: Record<string, any>; required?: string[] }
+  ): Record<string, unknown> {
+    if (!schema?.properties) {
+      // No schema, return empty object or first arg if it's an object
+      if (
+        args.length === 1 &&
+        typeof args[0] === "object" &&
+        !Array.isArray(args[0])
+      ) {
+        return args[0];
+      }
+      return {};
+    }
+
+    // Map positional arguments to named parameters
+    const result: Record<string, unknown> = {};
+    const propNames = Object.keys(schema.properties);
+
+    for (let i = 0; i < args.length && i < propNames.length; i++) {
+      result[propNames[i]] = args[i];
+    }
+
+    return result;
   }
 
   /**

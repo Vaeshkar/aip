@@ -28,22 +28,22 @@ Unlike vendor-specific protocols (e.g., Anthropic's MCP), AIP is designed to be:
 
 ```bash
 # Figma Design Service
-npm install @digital-liquids/aip-figma
+npm install @vaeshkar/aip-figma
 
 # Playwright Browser Automation Service
-npm install @digital-liquids/aip-playwright
+npm install @vaeshkar/aip-playwright
 ```
 
 ### Installation (Core)
 
 ```bash
-npm install @digital-liquids/aip-workspace
+npm install @vaeshkar/aip-core
 ```
 
 ### Basic Example (Server)
 
 ```typescript
-import { AIPServer } from "@digital-liquids/aip-core";
+import { AIPServer } from "@vaeshkar/aip-core";
 
 const server = new AIPServer({
   name: "MyService",
@@ -73,7 +73,7 @@ server.listen(3000);
 ### Basic Example (Client)
 
 ```typescript
-import { AIPClient } from "@digital-liquids/aip-core";
+import { AIPClient } from "@vaeshkar/aip-core";
 
 const client = new AIPClient({
   url: "http://localhost:3000",
@@ -90,9 +90,45 @@ console.log(result.data); // "Hello, Alice!"
 
 ---
 
+## 🚀 NEW: AICF-RPC - The AI-Native Protocol
+
+**AIP v2** introduces **AICF-RPC**, the world's first AI-native protocol designed specifically for LLM-to-service communication.
+
+### **Why AICF-RPC?**
+
+Traditional protocols like JSON-RPC were designed for humans. AICF-RPC is designed for AI:
+
+```bash
+# JSON-RPC (verbose, human-readable)
+curl -X POST http://localhost:3001/aip/v1/rpc \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"aip.tool.invoke","params":{"tool":"figma.getFile","arguments":{"fileKey":"abc123"}},"id":1}'
+
+# AICF-RPC (compact, AI-optimized)
+curl -X POST http://localhost:3001/aip/v1/aicf \
+  -H "Content-Type: text/plain" \
+  -d "CALL|figma.getFile|abc123"
+```
+
+### **The Results:**
+
+- 📊 **75.3% fewer tokens** than JSON-RPC
+- ⚡ **Same parsing speed** (10x faster in some cases)
+- 💰 **Lower LLM costs** ($401.50/year savings for typical usage)
+- 🤖 **AI-native design** (optimized for LLMs, not humans)
+
+### **Learn More:**
+
+- **[AICF-RPC README](docs/AICF-RPC-README.md)** - Complete guide
+- **[AICF-RPC Specification](docs/AICF-RPC-SPECIFICATION.md)** - Protocol spec
+- **[Benchmark Results](examples/aicf-benchmark.ts)** - Performance comparison
+
+---
+
 ## 📚 Documentation
 
 - **[Specification](docs/AIP-SPECIFICATION.md)** - Full protocol specification
+- **[AICF-RPC Guide](docs/AICF-RPC-README.md)** - AI-native protocol guide
 - **[Schema](src/schema/aip-schema.ts)** - TypeScript type definitions
 - **[Examples](examples/)** - Example implementations
 - **[API Reference](docs/API.md)** - API documentation
@@ -129,6 +165,8 @@ console.log(result.data); // "Hello, Alice!"
 ### ✅ Implemented
 
 - [x] JSON-RPC 2.0 message format
+- [x] **AICF-RPC** (AI-native protocol with 75% token savings)
+- [x] Dual protocol support (JSON-RPC + AICF-RPC)
 - [x] Handshake and capability negotiation
 - [x] Tool invocation
 - [x] HTTP transport
@@ -163,15 +201,16 @@ console.log(result.data); // "Hello, Alice!"
 
 ## 🆚 AIP vs MCP
 
-| Feature            | AIP                     | MCP          |
-| ------------------ | ----------------------- | ------------ |
-| **Vendor**         | Vendor-neutral          | Anthropic    |
-| **Format**         | JSON-RPC 2.0            | JSON-RPC 2.0 |
-| **Transports**     | HTTP, WS, stdio, custom | stdio, SSE   |
-| **Context Format** | AICF-native             | Custom       |
-| **Extensibility**  | Plugin architecture     | Limited      |
-| **Authentication** | Multiple methods        | Basic        |
-| **License**        | AGPL-3.0                | MIT          |
+| Feature              | AIP                                 | MCP          |
+| -------------------- | ----------------------------------- | ------------ |
+| **Vendor**           | Vendor-neutral                      | Anthropic    |
+| **Format**           | JSON-RPC 2.0 + AICF-RPC (AI-native) | JSON-RPC 2.0 |
+| **Token Efficiency** | 75% fewer tokens with AICF-RPC      | Standard     |
+| **Transports**       | HTTP, WS, stdio, custom             | stdio, SSE   |
+| **Context Format**   | AICF-native                         | Custom       |
+| **Extensibility**    | Plugin architecture                 | Limited      |
+| **Authentication**   | Multiple methods                    | Basic        |
+| **License**          | AGPL-3.0                            | MIT          |
 
 ---
 
@@ -228,15 +267,15 @@ console.log(context.data); // AICF-formatted data
 
 ### Core Libraries
 
-- **[@digital-liquids/aip-workspace](.)** - Core protocol implementation (TypeScript)
+- **[@vaeshkar/aip-core](.)** - Core protocol implementation (TypeScript)
 
 ### Production Services
 
-- **[@digital-liquids/aip-figma](services/figma)** - Figma design service (11 tools)
+- **[@vaeshkar/aip-figma](services/figma)** - Figma design service (11 tools)
   - Read Figma files, extract colors, list components, get versions, and more
   - Simple HTTP API, no configuration needed
 
-- **[@digital-liquids/aip-playwright](services/playwright)** - Browser automation service (21 tools)
+- **[@vaeshkar/aip-playwright](services/playwright)** - Browser automation service (21 tools)
   - Navigate, click, type, screenshot, resize, and more
   - Bridges Playwright MCP to AIP protocol
   - Works with ANY LLM!
@@ -245,10 +284,10 @@ console.log(context.data); // AICF-formatted data
 
 ```bash
 # Start Figma service
-npx @digital-liquids/aip-figma --figma-token=YOUR_TOKEN
+npx @vaeshkar/aip-figma --figma-token=YOUR_TOKEN
 
 # Start Playwright service
-npx @digital-liquids/aip-playwright
+npx @vaeshkar/aip-playwright
 
 # Use from any LLM or tool
 curl -X POST http://localhost:3001/aip/v1/rpc \

@@ -105,7 +105,7 @@ Create `services/playwright` that wraps Playwright MCP in AIP protocol:
 
 ```typescript
 // services/playwright/src/index.ts
-import { AIPServer } from '@digital-liquids/aip-core';
+import { AIPServer } from '@vaeshkar/aip-core';
 import { spawn } from 'child_process';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 
@@ -296,8 +296,8 @@ Report Results
 
 1. **Build AIP Playwright Service**
    - Wrap Playwright MCP in AIP protocol
-   - Publish to npm as `@digital-liquids/aip-playwright`
-   - Install globally: `npm install -g @digital-liquids/aip-playwright`
+   - Publish to npm as `@vaeshkar/aip-playwright`
+   - Install globally: `npm install -g @vaeshkar/aip-playwright`
 
 2. **Build Visual Diff Service**
    - Compare screenshots with Figma designs

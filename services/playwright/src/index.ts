@@ -11,10 +11,10 @@
  * 4. Provides universal browser automation for any LLM
  */
 
-import { AIPServer } from "./server/AIPServer.js";
-import { HTTPTransport } from "./transport/HTTPTransport.js";
-import { ToolCapability } from "./schema/aip-schema.js";
-import { MCPClient } from "./mcp-client.js";
+import { AIPServer } from "./server/AIPServer";
+import { HTTPTransport } from "./transport/HTTPTransport";
+import type { ToolCapability } from "./schema/aip-schema";
+import { MCPClient } from "./mcp-client";
 
 const PORT = parseInt(process.env.PORT || "3002", 10);
 const MCP_PORT = parseInt(process.env.MCP_PORT || "8932", 10);

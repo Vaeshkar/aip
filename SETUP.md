@@ -127,7 +127,7 @@ Make sure `services/figma/package.json` has:
 
 ```json
 {
-  "name": "@digital-liquids/aip-figma",
+  "name": "@vaeshkar/aip-figma",
   "version": "1.0.0",
   "bin": {
     "aip-figma": "./dist/index.js"
@@ -160,7 +160,7 @@ npm link
 aip-figma
 
 # Unlink when done testing
-npm unlink -g @digital-liquids/aip-figma
+npm unlink -g @vaeshkar/aip-figma
 ```
 
 ---
@@ -184,10 +184,10 @@ npm publish --access public
 
 ```bash
 # Check on npm
-open https://www.npmjs.com/package/@digital-liquids/aip-figma
+open https://www.npmjs.com/package/@vaeshkar/aip-figma
 
 # Test installation
-npm install -g @digital-liquids/aip-figma
+npm install -g @vaeshkar/aip-figma
 aip-figma --help
 ```
 
@@ -227,7 +227,7 @@ git push -u origin main
 ### **7.1 Install Globally**
 
 ```bash
-npm install -g @digital-liquids/aip-figma
+npm install -g @vaeshkar/aip-figma
 ```
 
 ### **7.2 Set Environment Variable**
@@ -315,7 +315,7 @@ git push
 
 ### **Module Not Found**
 
-**Problem**: `Cannot find module '@digital-liquids/aip-workspace'`
+**Problem**: `Cannot find module '@vaeshkar/aip-core'`
 
 **Solution**:
 ```bash

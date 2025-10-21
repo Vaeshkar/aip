@@ -43,7 +43,7 @@ npm link  # For local testing
 
 Or after publishing:
 ```bash
-npm install -g @digital-liquids/aip-figma
+npm install -g @vaeshkar/aip-figma
 ```
 
 ### **Set Your API Key**

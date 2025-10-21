@@ -6,6 +6,7 @@ import express, { Express, Request, Response } from "express";
 import type { AIPServer } from "../server/AIPServer";
 import type { JSONRPCRequest } from "../schema/aip-schema";
 import { ParseError, UnauthorizedError } from "../utils/errors";
+import { isAICFFormat } from "../utils/aicf-rpc";
 
 /**
  * HTTP Transport configuration
@@ -48,6 +49,9 @@ export class HTTPTransport {
     // JSON body parser
     this.app.use(express.json());
 
+    // Text body parser (for AICF)
+    this.app.use(express.text({ type: "text/plain" }));
+
     // CORS
     if (this.config.cors) {
       this.app.use((req, res, next) => {
@@ -82,9 +86,15 @@ export class HTTPTransport {
       res.json({ status: "ok", timestamp: new Date().toISOString() });
     });
 
-    // AIP RPC endpoint
+    // AIP JSON-RPC endpoint
     this.app.post(this.config.path!, async (req, res) => {
       await this.handleRPCRequest(req, res);
+    });
+
+    // AIP AICF-RPC endpoint
+    const aicfPath = this.config.path!.replace("/rpc", "/aicf");
+    this.app.post(aicfPath, async (req, res) => {
+      await this.handleAICFRequest(req, res);
     });
 
     // 404 handler
@@ -152,6 +162,42 @@ export class HTTPTransport {
   }
 
   /**
+   * Handle AICF-RPC request
+   */
+  private async handleAICFRequest(req: Request, res: Response): Promise<void> {
+    try {
+      // Validate authentication if configured
+      if (this.config.authValidator) {
+        const isAuthorized = await this.config.authValidator(req);
+        if (!isAuthorized) {
+          res.status(401).send("ERR|401|Unauthorized");
+          return;
+        }
+      }
+
+      // Parse request (body should be text/plain)
+      const input = typeof req.body === "string" ? req.body : String(req.body);
+
+      if (!input || !isAICFFormat(input)) {
+        res.status(400).send("ERR|400|Invalid AICF request format");
+        return;
+      }
+
+      // Handle request
+      const response = await this.server.handleAICFRequest(input);
+
+      // Send response as text/plain
+      res.setHeader("Content-Type", "text/plain");
+      res.send(response);
+    } catch (error) {
+      // Handle errors
+      const errorMessage =
+        error instanceof Error ? error.message : "Internal error";
+      res.status(500).send(`ERR|500|${errorMessage}`);
+    }
+  }
+
+  /**
    * Start HTTP server
    */
   listen(port?: number, host?: string): Promise<void> {
@@ -160,9 +206,12 @@ export class HTTPTransport {
 
     return new Promise((resolve) => {
       this.app.listen(listenPort, listenHost, () => {
+        const aicfPath = this.config.path!.replace("/rpc", "/aicf");
         console.log(
-          `[AIP] Server listening on http://${listenHost}:${listenPort}${this.config.path}`
+          `[AIP] Server listening on http://${listenHost}:${listenPort}`
         );
+        console.log(`[AIP]   JSON-RPC: ${this.config.path}`);
+        console.log(`[AIP]   AICF-RPC: ${aicfPath}`);
         resolve();
       });
     });

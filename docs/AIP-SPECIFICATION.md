@@ -1,8 +1,8 @@
 # AIP (AI-Protocol) Specification v1.0.0
 
-**Status:** Draft  
-**Version:** 1.0.0  
-**Date:** 2025-10-20  
+**Status:** Draft
+**Version:** 1.0.0
+**Date:** 2025-10-20
 **Authors:** Digital Liquids (Dennis van Leeuwen)
 
 ---
@@ -81,6 +81,7 @@ AIP uses **JSON-RPC 2.0** as the base message format for compatibility with exis
 ```
 
 **Response:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -92,6 +93,7 @@ AIP uses **JSON-RPC 2.0** as the base message format for compatibility with exis
 ```
 
 **Error:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -111,6 +113,7 @@ AIP uses **JSON-RPC 2.0** as the base message format for compatibility with exis
 ### 3.1 Handshake
 
 **Client → Server:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -132,6 +135,7 @@ AIP uses **JSON-RPC 2.0** as the base message format for compatibility with exis
 ```
 
 **Server → Client:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -154,6 +158,7 @@ AIP uses **JSON-RPC 2.0** as the base message format for compatibility with exis
 ### 3.2 Capability Discovery
 
 **Client → Server:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -164,6 +169,7 @@ AIP uses **JSON-RPC 2.0** as the base message format for compatibility with exis
 ```
 
 **Server → Client:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -195,6 +201,7 @@ AIP uses **JSON-RPC 2.0** as the base message format for compatibility with exis
 ### 3.3 Service Invocation
 
 **Client → Server (Tool Call):**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -210,6 +217,7 @@ AIP uses **JSON-RPC 2.0** as the base message format for compatibility with exis
 ```
 
 **Server → Client (Tool Response):**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -262,6 +270,7 @@ interface Context {
 ```
 
 **Example AICF Context:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -274,6 +283,7 @@ interface Context {
 ```
 
 **Response:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -317,6 +327,7 @@ For long-running operations, AIP supports streaming responses:
 ```
 
 **Streaming Response (multiple messages):**
+
 ```json
 { "jsonrpc": "2.0", "id": "5", "result": { "chunk": "Once upon", "done": false } }
 { "jsonrpc": "2.0", "id": "5", "result": { "chunk": " a time", "done": false } }
@@ -394,18 +405,18 @@ Servers should implement rate limiting:
 
 ### 7.1 Standard Error Codes
 
-| Code | Message | Description |
-|------|---------|-------------|
-| -32700 | Parse error | Invalid JSON |
-| -32600 | Invalid Request | Invalid JSON-RPC |
-| -32601 | Method not found | Unknown method |
-| -32602 | Invalid params | Invalid parameters |
-| -32603 | Internal error | Server error |
-| 401 | Unauthorized | Authentication failed |
-| 403 | Forbidden | Permission denied |
-| 404 | Not Found | Resource not found |
-| 429 | Too Many Requests | Rate limit exceeded |
-| 500 | Internal Server Error | Server error |
+| Code   | Message               | Description           |
+| ------ | --------------------- | --------------------- |
+| -32700 | Parse error           | Invalid JSON          |
+| -32600 | Invalid Request       | Invalid JSON-RPC      |
+| -32601 | Method not found      | Unknown method        |
+| -32602 | Invalid params        | Invalid parameters    |
+| -32603 | Internal error        | Server error          |
+| 401    | Unauthorized          | Authentication failed |
+| 403    | Forbidden             | Permission denied     |
+| 404    | Not Found             | Resource not found    |
+| 429    | Too Many Requests     | Rate limit exceeded   |
+| 500    | Internal Server Error | Server error          |
 
 ---
 
@@ -432,14 +443,14 @@ AIP supports a plugin architecture for extending functionality.
 
 ## 9. Comparison with MCP
 
-| Feature | AIP | MCP |
-|---------|-----|-----|
-| Vendor | Vendor-neutral | Anthropic |
-| Format | JSON-RPC 2.0 | JSON-RPC 2.0 |
-| Transports | HTTP, WS, stdio, custom | stdio, SSE |
-| Context Format | AICF-native | Custom |
-| Extensibility | Plugin architecture | Limited |
-| Authentication | Multiple methods | Basic |
+| Feature        | AIP                     | MCP          |
+| -------------- | ----------------------- | ------------ |
+| Vendor         | Vendor-neutral          | Anthropic    |
+| Format         | JSON-RPC 2.0            | JSON-RPC 2.0 |
+| Transports     | HTTP, WS, stdio, custom | stdio, SSE   |
+| Context Format | AICF-native             | Custom       |
+| Extensibility  | Plugin architecture     | Limited      |
+| Authentication | Multiple methods        | Basic        |
 
 ---
 
@@ -453,6 +464,5 @@ AIP supports a plugin architecture for extending functionality.
 
 ---
 
-**License:** MIT  
-**Repository:** https://github.com/digital-liquids/aip-core
-
+**License:** AGPL-3.0
+**Repository:** https://github.com/Vaeshkar/aip
