@@ -54,11 +54,13 @@ Create `services/figma/.env.local`:
 
 ```bash
 FIGMA_API_KEY=figd_your_token_here
-PORT=3001
+PORT=65001  # Optional: defaults to 65001 with dynamic allocation
 HOST=0.0.0.0
 ```
 
 **Important**: Never commit `.env.local` to git!
+
+**Note**: The service uses **dynamic port allocation** starting from port 65001. If the port is in use, it will automatically find the next available port or kill old instances of the same service.
 
 ---
 
@@ -72,6 +74,7 @@ npm start
 ```
 
 You should see:
+
 ```
 🎨 Figma AIP Service started successfully!
 
@@ -80,18 +83,21 @@ You should see:
   ...
 
 🔗 Endpoints:
-  - Health: http://0.0.0.0:3001/health
-  - RPC: http://0.0.0.0:3001/aip/v1/rpc
+  - Health: http://0.0.0.0:65001/health
+  - RPC: http://0.0.0.0:65001/aip/v1/rpc
+  - AICF: http://0.0.0.0:65001/aip/v1/aicf
 ```
+
+**Note**: The actual port may differ if 65001 is in use. Check the console output for the allocated port.
 
 ### **3.2 Test with curl**
 
 ```bash
 # Test health endpoint
-curl http://localhost:3001/health
+curl http://localhost:65001/health
 
 # Test capabilities
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -101,7 +107,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
   }'
 
 # Test with a real Figma file
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -132,11 +138,7 @@ Make sure `services/figma/package.json` has:
   "bin": {
     "aip-figma": "./dist/index.js"
   },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
+  "files": ["dist", "README.md", "LICENSE"],
   "publishConfig": {
     "access": "public"
   }
@@ -248,12 +250,12 @@ aip-figma
 In Augment, tell Claude:
 
 ```
-I have a Figma AIP service running at http://localhost:3001/aip/v1/rpc
+I have a Figma AIP service running at http://localhost:65001/aip/v1/rpc
 
 Can you get the Figma file with key "Ml7RPTviH7YoellUOEQ9h1" and analyze it?
 
 Use this curl command:
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -308,6 +310,7 @@ git push
 **Problem**: `{"success":false,"error":"Request failed with status code 403"}`
 
 **Solutions**:
+
 1. Check your API token is correct
 2. Make sure the file is accessible with your token
 3. Regenerate your Figma API token
@@ -318,6 +321,7 @@ git push
 **Problem**: `Cannot find module '@vaeshkar/aip-core'`
 
 **Solution**:
+
 ```bash
 cd /path/to/aip
 npm install
@@ -329,21 +333,32 @@ npm run build
 **Problem**: `EACCES: permission denied`
 
 **Solution**:
+
 ```bash
 chmod +x services/figma/dist/index.js
 ```
 
 ### **Port Already in Use**
 
-**Problem**: `Error: listen EADDRINUSE: address already in use :::3001`
+**Problem**: `Error: listen EADDRINUSE: address already in use :::65001`
 
-**Solution**:
+**Solution**: The service now has **automatic port management**! It will:
+
+1. ✅ Detect if the port is in use
+2. ✅ Check if it's the same service (kills old instance automatically)
+3. ✅ Find next available port if needed (65002, 65003, etc.)
+
+You can also manually specify a port:
+
+```bash
+PORT=12345 aip-figma
+```
+
+Or manually kill processes:
+
 ```bash
 # Find and kill the process
-lsof -ti:3001 | xargs kill -9
-
-# Or use a different port
-PORT=3002 aip-figma
+lsof -ti:65001 | xargs kill -9
 ```
 
 ---
@@ -361,6 +376,7 @@ PORT=3002 aip-figma
 ## 🎉 **Success!**
 
 You now have:
+
 - ✅ AIP core protocol
 - ✅ Figma service published to npm
 - ✅ Globally installable CLI
@@ -372,4 +388,3 @@ You now have:
 ---
 
 **Questions?** Open an issue on GitHub: https://github.com/Vaeshkar/aip/issues
-

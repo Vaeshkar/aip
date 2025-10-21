@@ -66,6 +66,15 @@ npm install -g @vaeshkar/aip-figma
 npx @vaeshkar/aip-figma --figma-token=YOUR_TOKEN
 ```
 
+**Port Management**: The service uses **dynamic port allocation** starting from port **65001**. It automatically:
+
+- ✅ Detects if the port is in use
+- ✅ Kills old instances of the same service
+- ✅ Finds the next available port if needed
+- ✅ Reports the allocated port on startup
+
+Override with: `PORT=12345 aip-figma`
+
 ### From Source
 
 ```bash
@@ -83,8 +92,8 @@ npm start
 
 The service will start with **dual protocol support**:
 
-- **JSON-RPC**: `http://localhost:3001/aip/v1/rpc`
-- **AICF-RPC**: `http://localhost:3001/aip/v1/aicf` (75% fewer tokens!)
+- **JSON-RPC**: `http://localhost:65001/aip/v1/rpc`
+- **AICF-RPC**: `http://localhost:65001/aip/v1/aicf` (75% fewer tokens!)
 
 ---
 
@@ -96,7 +105,7 @@ The service will start with **dual protocol support**:
 import { AIPClient } from "@vaeshkar/aip-core";
 
 const client = new AIPClient({
-  url: "http://localhost:3001/aip/v1/rpc",
+  url: "http://localhost:65001/aip/v1/rpc",
 });
 
 await client.connect();
@@ -113,7 +122,7 @@ console.log(result.data);
 
 ```bash
 # Get a Figma file
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -134,17 +143,17 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 
 ```bash
 # List all tools
-curl -X POST http://localhost:3001/aip/v1/aicf \
+curl -X POST http://localhost:65001/aip/v1/aicf \
   -H "Content-Type: text/plain" \
   -d "LIST"
 
 # Get tool info
-curl -X POST http://localhost:3001/aip/v1/aicf \
+curl -X POST http://localhost:65001/aip/v1/aicf \
   -H "Content-Type: text/plain" \
   -d "INFO|figma.getFile"
 
 # Get a Figma file
-curl -X POST http://localhost:3001/aip/v1/aicf \
+curl -X POST http://localhost:65001/aip/v1/aicf \
   -H "Content-Type: text/plain" \
   -d "CALL|figma.getFile|your-file-key"
 ```
@@ -205,13 +214,13 @@ curl -X POST http://localhost:3001/aip/v1/aicf \
 ### Environment Variables
 
 - `FIGMA_API_KEY` - Your Figma API token (required)
-- `PORT` - Server port (default: 3001)
+- `PORT` - Server port (default: 65001)
 - `HOST` - Server host (default: 0.0.0.0)
 
 ### Command Line Arguments
 
 ```bash
-npm start -- --figma-token YOUR_TOKEN --port 3001
+npm start -- --figma-token YOUR_TOKEN --port 65001
 ```
 
 ---

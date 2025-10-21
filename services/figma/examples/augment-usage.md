@@ -41,8 +41,8 @@ You should see:
   ...
 
 🔗 Endpoints:
-  - Health: http://0.0.0.0:3001/health
-  - RPC: http://0.0.0.0:3001/aip/v1/rpc
+  - Health: http://0.0.0.0:65001/health
+  - RPC: http://0.0.0.0:65001/aip/v1/rpc
 ```
 
 **Keep this terminal open!** The service needs to keep running.
@@ -66,13 +66,13 @@ Now, in **Augment**, you can tell Claude to use the service!
 In Augment, type:
 
 ```
-I have a Figma AIP service running at http://localhost:3001/aip/v1/rpc
+I have a Figma AIP service running at http://localhost:65001/aip/v1/rpc
 
 Can you get my Figma file with key "abcXYZ123"?
 
 Use this curl command:
 
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -93,7 +93,7 @@ Claude will execute the command and show you the Figma data!
 #### **Example 2: Generate React Components**
 
 ```
-I have a Figma AIP service at http://localhost:3001/aip/v1/rpc
+I have a Figma AIP service at http://localhost:65001/aip/v1/rpc
 
 Can you:
 1. Get my Figma file (key: abcXYZ123)
@@ -112,7 +112,7 @@ Claude will:
 #### **Example 3: Extract Design Tokens**
 
 ```
-I have a Figma AIP service at http://localhost:3001/aip/v1/rpc
+I have a Figma AIP service at http://localhost:65001/aip/v1/rpc
 
 Can you:
 1. Get all styles from my Figma file (key: abcXYZ123)
@@ -134,7 +134,7 @@ Create a file `figma-cli.sh` in your project:
 # Figma AIP Service Helper
 # Usage: ./figma-cli.sh getFile abc123
 
-SERVICE_URL="http://localhost:3001/aip/v1/rpc"
+SERVICE_URL="http://localhost:65001/aip/v1/rpc"
 
 case "$1" in
   getFile)
@@ -212,7 +212,7 @@ Run: ./figma-cli.sh getFile abcXYZ123
 
 2. **In Augment** (your main workspace):
    ```
-   I have a Figma AIP service running at http://localhost:3001/aip/v1/rpc
+   I have a Figma AIP service running at http://localhost:65001/aip/v1/rpc
    
    My Figma file key is: abcXYZ123
    
@@ -247,7 +247,7 @@ Create `.augment/figma-context.md`:
 ```markdown
 # Figma AIP Service Context
 
-I have a Figma AIP service running at http://localhost:3001/aip/v1/rpc
+I have a Figma AIP service running at http://localhost:65001/aip/v1/rpc
 
 ## Available Tools
 
@@ -266,7 +266,7 @@ I have a Figma AIP service running at http://localhost:3001/aip/v1/rpc
 
 ## Usage Pattern
 
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":"1","method":"aip.tool.invoke","params":{"tool":"TOOL_NAME","arguments":{...}}}'
 ```
@@ -279,7 +279,7 @@ Add to your `.bashrc` or `.zshrc`:
 
 ```bash
 alias figma-start="cd ~/Programming/aip-workspace/services/figma && npm start"
-alias figma-get="curl -s -X POST http://localhost:3001/aip/v1/rpc -H 'Content-Type: application/json' -d"
+alias figma-get="curl -s -X POST http://localhost:65001/aip/v1/rpc -H 'Content-Type: application/json' -d"
 ```
 
 Now you can just run:

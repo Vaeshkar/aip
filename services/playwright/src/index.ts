@@ -15,8 +15,12 @@ import { AIPServer } from "./server/AIPServer";
 import { HTTPTransport } from "./transport/HTTPTransport";
 import type { ToolCapability } from "./schema/aip-schema";
 import { MCPClient } from "./mcp-client";
+import {
+  allocatePort,
+  getRecommendedPort,
+  formatPortAllocationResult,
+} from "./utils/port-manager";
 
-const PORT = parseInt(process.env.PORT || "3002", 10);
 const MCP_PORT = parseInt(process.env.MCP_PORT || "8932", 10);
 
 async function main() {
@@ -81,11 +85,27 @@ async function main() {
       });
     }
 
-    // Step 6: Start AIP HTTP transport
-    console.log(`\n🚀 Starting AIP server on port ${PORT}...\n`);
+    // Step 6: Allocate port dynamically
+    const preferredPort = process.env.PORT
+      ? parseInt(process.env.PORT)
+      : getRecommendedPort("playwright");
+
+    console.log("\n🔌 Allocating port...");
+    console.log(`   Preferred port: ${preferredPort}`);
+
+    const portResult = await allocatePort({
+      preferredPort,
+      serviceName: "playwright",
+      killSameService: true,
+    });
+
+    console.log(formatPortAllocationResult(portResult));
+
+    // Step 7: Start AIP HTTP transport
+    console.log(`\n🚀 Starting AIP server on port ${portResult.port}...\n`);
 
     const transport = new HTTPTransport(aipServer, {
-      port: PORT,
+      port: portResult.port,
       host: "0.0.0.0",
       cors: true,
     });
@@ -95,14 +115,16 @@ async function main() {
     console.log("=".repeat(70));
     console.log("✅ AIP Playwright Service is running!");
     console.log("");
-    console.log(`   AIP HTTP:  http://localhost:${PORT}/aip/v1/rpc`);
+    console.log(`   AIP HTTP:  http://localhost:${portResult.port}/aip/v1/rpc`);
     console.log(`   MCP SSE:   http://localhost:${MCP_PORT}/mcp`);
     console.log("");
     console.log(`   Tools: ${mcpTools.length} browser automation tools`);
     console.log("");
     console.log("Example usage:");
     console.log("");
-    console.log("  curl -X POST http://localhost:" + PORT + "/aip/v1/rpc \\");
+    console.log(
+      "  curl -X POST http://localhost:" + portResult.port + "/aip/v1/rpc \\"
+    );
     console.log('    -H "Content-Type: application/json" \\');
     console.log(
       '    -d \'{"jsonrpc":"2.0","id":"1","method":"aip.tool.invoke",'

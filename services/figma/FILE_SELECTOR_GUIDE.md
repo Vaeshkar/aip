@@ -104,7 +104,7 @@ The file selector adds **3 new tools**:
 ### Example 1: List Configured Files
 
 ```bash
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -152,7 +152,7 @@ curl ... -d '{"tool":"figma.getFile","arguments":{"fileKey":"abc123xyz"}}'
 You can now do:
 ```bash
 # New way - using friendly ID
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -175,7 +175,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 Get all mobile-related files:
 
 ```bash
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -197,7 +197,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 In **Augment**, you can now say:
 
 ```
-I have a Figma AIP service at http://localhost:3001/aip/v1/rpc
+I have a Figma AIP service at http://localhost:65001/aip/v1/rpc
 
 Can you:
 1. List all my configured Figma files

@@ -140,32 +140,35 @@ curl -X POST http://localhost:3000/aip/v1/rpc \
 ## Creating Your Own Server
 
 ```typescript
-import { AIPServer, HTTPTransport } from '@vaeshkar/aip-core';
+import { AIPServer, HTTPTransport } from "@vaeshkar/aip-core";
 
 // Create server
 const server = new AIPServer({
-  name: 'MyAIPServer',
-  version: '1.0.0',
+  name: "MyAIPServer",
+  version: "1.0.0",
 });
 
 // Register a tool
-server.registerTool({
-  type: 'tool',
-  name: 'hello',
-  description: 'Say hello',
-  schema: {
-    type: 'object',
-    properties: {
-      name: { type: 'string' },
+server.registerTool(
+  {
+    type: "tool",
+    name: "hello",
+    description: "Say hello",
+    schema: {
+      type: "object",
+      properties: {
+        name: { type: "string" },
+      },
+      required: ["name"],
     },
-    required: ['name'],
   },
-}, async (args) => {
-  return {
-    success: true,
-    data: `Hello, ${args.name}!`,
-  };
-});
+  async (args) => {
+    return {
+      success: true,
+      data: `Hello, ${args.name}!`,
+    };
+  }
+);
 
 // Start HTTP transport
 const transport = new HTTPTransport(server);
@@ -177,18 +180,18 @@ transport.listen(3000);
 ## Creating Your Own Client
 
 ```typescript
-import { AIPClient } from '@vaeshkar/aip-core';
+import { AIPClient } from "@vaeshkar/aip-core";
 
 // Create client
 const client = new AIPClient({
-  url: 'http://localhost:3000/aip/v1/rpc',
+  url: "http://localhost:3000/aip/v1/rpc",
 });
 
 // Connect
 await client.connect();
 
 // Invoke tool
-const result = await client.invokeTool('hello', { name: 'World' });
+const result = await client.invokeTool("hello", { name: "World" });
 console.log(result.data); // "Hello, World!"
 
 // Disconnect
@@ -213,7 +216,7 @@ await client.disconnect();
 If port 3000 is already in use, you can change it:
 
 ```typescript
-transport.listen(3001); // Use a different port
+transport.listen(65001); // Or use dynamic port allocation (recommended)
 ```
 
 ### TypeScript errors
@@ -243,4 +246,3 @@ npm install
 ---
 
 **Happy coding! 🎉**
-

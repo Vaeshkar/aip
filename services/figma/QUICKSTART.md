@@ -27,7 +27,7 @@ Edit `.env` and add your token:
 
 ```bash
 FIGMA_API_KEY=your_figma_api_key_here
-PORT=3001
+PORT=65001
 HOST=0.0.0.0
 ```
 
@@ -53,8 +53,8 @@ You should see:
   - figma.getTeamComponents: Get components from a Figma team
 
 🔗 Endpoints:
-  - Health: http://0.0.0.0:3001/health
-  - RPC: http://0.0.0.0:3001/aip/v1/rpc
+  - Health: http://0.0.0.0:65001/health
+  - RPC: http://0.0.0.0:65001/aip/v1/rpc
 ```
 
 ---
@@ -65,7 +65,7 @@ You should see:
 
 ```bash
 # Get a Figma file
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -99,7 +99,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 import { AIPClient } from '@vaeshkar/aip-core';
 
 const client = new AIPClient({
-  url: 'http://localhost:3001/aip/v1/rpc',
+  url: 'http://localhost:65001/aip/v1/rpc',
 });
 
 await client.connect();
@@ -119,7 +119,7 @@ console.log(result.data);
 ### Get File Information
 
 ```bash
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -138,7 +138,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 ### Get Comments
 
 ```bash
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -157,7 +157,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 ### Render Images
 
 ```bash
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -190,7 +190,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 
 ```bash
 # Get all styles from a file
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -209,7 +209,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 
 ```bash
 # Get file version history
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -228,7 +228,7 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 
 ```bash
 # Get specific frame/component
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",

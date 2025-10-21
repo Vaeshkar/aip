@@ -31,7 +31,7 @@ cd services/figma
 npm start
 ```
 
-The service will start on `http://localhost:3001`
+The service will start on `http://localhost:65001`
 
 ### Step 2: Use It from Your Other Project
 
@@ -43,7 +43,7 @@ From **any project**, **any language**, **any LLM**:
 
 ```bash
 # Get a Figma file
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -80,7 +80,7 @@ Then use it:
 import { AIPClient } from '@vaeshkar/aip-core';
 
 const client = new AIPClient({
-  url: 'http://localhost:3001/aip/v1/rpc',
+  url: 'http://localhost:65001/aip/v1/rpc',
 });
 
 await client.connect();
@@ -98,13 +98,13 @@ console.log(result.data);
 In **Augment** or any AI chat, just tell the LLM:
 
 ```
-I have a Figma AIP service running at http://localhost:3001/aip/v1/rpc
+I have a Figma AIP service running at http://localhost:65001/aip/v1/rpc
 
 Can you help me get data from my Figma file?
 File key: abc123
 
 Use this curl command:
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":"1","method":"aip.tool.invoke","params":{"tool":"figma.getFile","arguments":{"fileKey":"abc123","depth":1}}}'
 ```
@@ -133,12 +133,12 @@ Now you can:
 
 2. **In Augment**, tell Claude:
    ```
-   I have a Figma AIP service running locally at http://localhost:3001/aip/v1/rpc
+   I have a Figma AIP service running locally at http://localhost:65001/aip/v1/rpc
    
    Can you help me get my Figma file with key "abc123"?
    
    Use this curl command:
-   curl -X POST http://localhost:3001/aip/v1/rpc \
+   curl -X POST http://localhost:65001/aip/v1/rpc \
      -H "Content-Type: application/json" \
      -d '{"jsonrpc":"2.0","id":"1","method":"aip.tool.invoke","params":{"tool":"figma.getFile","arguments":{"fileKey":"abc123","depth":1}}}'
    ```
@@ -188,7 +188,7 @@ Tell your LLM about these tools:
 import requests
 
 response = requests.post(
-    'http://localhost:3001/aip/v1/rpc',
+    'http://localhost:65001/aip/v1/rpc',
     json={
         'jsonrpc': '2.0',
         'id': '1',
@@ -234,7 +234,7 @@ func main() {
     
     jsonData, _ := json.Marshal(payload)
     resp, _ := http.Post(
-        "http://localhost:3001/aip/v1/rpc",
+        "http://localhost:65001/aip/v1/rpc",
         "application/json",
         bytes.NewBuffer(jsonData),
     )
@@ -253,7 +253,7 @@ async fn main() {
     let client = reqwest::Client::new();
     
     let response = client
-        .post("http://localhost:3001/aip/v1/rpc")
+        .post("http://localhost:65001/aip/v1/rpc")
         .json(&json!({
             "jsonrpc": "2.0",
             "id": "1",
@@ -281,7 +281,7 @@ async fn main() {
 
 ### Running Locally (Development)
 
-- ✅ Service runs on `localhost:3001`
+- ✅ Service runs on `localhost:65001`
 - ✅ Only accessible from your machine
 - ✅ Figma API key stored in `.env.local` (not committed to git)
 
@@ -304,7 +304,7 @@ Create a helper script in your project:
 ```bash
 #!/bin/bash
 
-FIGMA_SERVICE="http://localhost:3001/aip/v1/rpc"
+FIGMA_SERVICE="http://localhost:65001/aip/v1/rpc"
 
 function figma_get_file() {
   local file_key=$1

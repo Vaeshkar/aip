@@ -153,7 +153,7 @@ Content-Type: text/plain
 
 ```http
 POST /aip/v1/aicf HTTP/1.1
-Host: localhost:3001
+Host: localhost:65001
 Content-Type: text/plain
 
 CALL|figma.getFile|abc123

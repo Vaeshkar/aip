@@ -27,6 +27,15 @@ npm install -g @vaeshkar/aip-playwright
 npx @vaeshkar/aip-playwright
 ```
 
+**Port Management**: The service uses **dynamic port allocation** starting from port **65002**. It automatically:
+
+- ✅ Detects if the port is in use
+- ✅ Kills old instances of the same service
+- ✅ Finds the next available port if needed
+- ✅ Reports the allocated port on startup
+
+Override with: `PORT=12345 aip-playwright`
+
 ### **Install from Source**
 
 ```bash
@@ -47,14 +56,14 @@ The service will:
 1. Start Playwright MCP server internally (port 8932)
 2. Connect to it via MCP SDK
 3. Expose AIP HTTP interface with **dual protocol support**:
-   - **JSON-RPC**: `http://localhost:3002/aip/v1/rpc`
-   - **AICF-RPC**: `http://localhost:3002/aip/v1/aicf` (75% fewer tokens!)
+   - **JSON-RPC**: `http://localhost:65002/aip/v1/rpc`
+   - **AICF-RPC**: `http://localhost:65002/aip/v1/aicf` (75% fewer tokens!)
 
 ### **Test with JSON-RPC**
 
 ```bash
 # Navigate to a webpage
-curl -X POST http://localhost:3002/aip/v1/rpc \
+curl -X POST http://localhost:65002/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -69,7 +78,7 @@ curl -X POST http://localhost:3002/aip/v1/rpc \
   }'
 
 # Take a screenshot
-curl -X POST http://localhost:3002/aip/v1/rpc \
+curl -X POST http://localhost:65002/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -90,17 +99,17 @@ curl -X POST http://localhost:3002/aip/v1/rpc \
 
 ```bash
 # List all tools
-curl -X POST http://localhost:3002/aip/v1/aicf \
+curl -X POST http://localhost:65002/aip/v1/aicf \
   -H "Content-Type: text/plain" \
   -d "LIST"
 
 # Navigate to a webpage
-curl -X POST http://localhost:3002/aip/v1/aicf \
+curl -X POST http://localhost:65002/aip/v1/aicf \
   -H "Content-Type: text/plain" \
   -d "CALL|playwright.navigate|https://example.com"
 
 # Take a screenshot
-curl -X POST http://localhost:3002/aip/v1/aicf \
+curl -X POST http://localhost:65002/aip/v1/aicf \
   -H "Content-Type: text/plain" \
   -d "CALL|playwright.take_screenshot|screenshot.png"
 ```
@@ -164,7 +173,7 @@ All Playwright MCP tools are exposed with `playwright.` prefix:
 
 ```javascript
 // Read Figma design
-const figmaResponse = await fetch("http://localhost:3001/aip/v1/rpc", {
+const figmaResponse = await fetch("http://localhost:65001/aip/v1/rpc", {
   method: "POST",
   body: JSON.stringify({
     jsonrpc: "2.0",
@@ -181,7 +190,7 @@ const figmaResponse = await fetch("http://localhost:3001/aip/v1/rpc", {
 // ... (AI generates code)
 
 // Test with Playwright
-await fetch("http://localhost:3002/aip/v1/rpc", {
+await fetch("http://localhost:65002/aip/v1/rpc", {
   method: "POST",
   body: JSON.stringify({
     jsonrpc: "2.0",
@@ -195,7 +204,7 @@ await fetch("http://localhost:3002/aip/v1/rpc", {
 });
 
 // Screenshot at mobile size
-await fetch("http://localhost:3002/aip/v1/rpc", {
+await fetch("http://localhost:65002/aip/v1/rpc", {
   method: "POST",
   body: JSON.stringify({
     jsonrpc: "2.0",
@@ -208,7 +217,7 @@ await fetch("http://localhost:3002/aip/v1/rpc", {
   }),
 });
 
-await fetch("http://localhost:3002/aip/v1/rpc", {
+await fetch("http://localhost:65002/aip/v1/rpc", {
   method: "POST",
   body: JSON.stringify({
     jsonrpc: "2.0",
@@ -245,7 +254,7 @@ Test your app at multiple breakpoints:
 ### **Environment Variables**
 
 ```bash
-PORT=3002          # AIP HTTP server port
+PORT=65002          # AIP HTTP server port
 MCP_PORT=8932      # Internal MCP server port
 ```
 
@@ -357,11 +366,11 @@ Perfect combo for design-to-code workflows:
 ```bash
 # Terminal 1: Start Figma service
 cd services/figma
-npm start  # Port 3001
+npm start  # Port 65001
 
 # Terminal 2: Start Playwright service
 cd services/playwright
-npm start  # Port 3002
+npm start  # Port 65002
 
 # Now you have:
 # - Design reading (Figma)

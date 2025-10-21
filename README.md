@@ -100,12 +100,12 @@ Traditional protocols like JSON-RPC were designed for humans. AICF-RPC is design
 
 ```bash
 # JSON-RPC (verbose, human-readable)
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"aip.tool.invoke","params":{"tool":"figma.getFile","arguments":{"fileKey":"abc123"}},"id":1}'
 
 # AICF-RPC (compact, AI-optimized)
-curl -X POST http://localhost:3001/aip/v1/aicf \
+curl -X POST http://localhost:65001/aip/v1/aicf \
   -H "Content-Type: text/plain" \
   -d "CALL|figma.getFile|abc123"
 ```
@@ -290,10 +290,10 @@ npx @vaeshkar/aip-figma --figma-token=YOUR_TOKEN
 npx @vaeshkar/aip-playwright
 
 # Use from any LLM or tool
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -d '{"method":"aip.tool.invoke","params":{"tool":"figma.getFile","arguments":{"fileKey":"YOUR_KEY"}}}'
 
-curl -X POST http://localhost:3002/aip/v1/rpc \
+curl -X POST http://localhost:65002/aip/v1/rpc \
   -d '{"method":"aip.tool.invoke","params":{"tool":"playwright.navigate","arguments":{"url":"https://example.com"}}}'
 ```
 

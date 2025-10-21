@@ -3,6 +3,7 @@
 ## 🎉 **What We're Building**
 
 A complete workflow that:
+
 1. **Reads Figma designs** via AIP Figma service
 2. **Generates code** (React components with exact colors)
 3. **Tests the code** via Playwright MCP (screenshots, interactions, responsive)
@@ -13,7 +14,8 @@ A complete workflow that:
 ## 🚀 **Current Status**
 
 ### ✅ **Working:**
-- **AIP Figma Service** - Running on port 3001
+
+- **AIP Figma Service** - Running on port 65001 (dynamic allocation)
   - Can read Figma files
   - Extract colors, layouts, components
   - Works with any LLM via HTTP
@@ -25,6 +27,7 @@ A complete workflow that:
   - Console/network monitoring
 
 ### ⚠️ **Challenge:**
+
 - **MCP uses SSE (Server-Sent Events)** - Requires persistent connection
 - **Not simple HTTP POST** like AIP
 - Need proper MCP client to communicate
@@ -42,27 +45,28 @@ npm install @modelcontextprotocol/sdk
 ```
 
 ```javascript
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 
 // Create MCP client
-const transport = new SSEClientTransport(
-  new URL('http://localhost:8931/mcp')
-);
+const transport = new SSEClientTransport(new URL("http://localhost:8931/mcp"));
 
-const client = new Client({
-  name: 'aip-test-client',
-  version: '1.0.0'
-}, {
-  capabilities: {}
-});
+const client = new Client(
+  {
+    name: "aip-test-client",
+    version: "1.0.0",
+  },
+  {
+    capabilities: {},
+  }
+);
 
 await client.connect(transport);
 
 // Now we can call tools!
 const result = await client.callTool({
-  name: 'browser_navigate',
-  arguments: { url: 'https://example.com' }
+  name: "browser_navigate",
+  arguments: { url: "https://example.com" },
 });
 ```
 
@@ -82,13 +86,14 @@ Since you're already using Claude (me!), just install Playwright MCP in Claude D
       "args": ["@playwright/mcp@latest"]
     },
     "figma-aip": {
-      "url": "http://localhost:3001/aip/v1/rpc"
+      "url": "http://localhost:65001/aip/v1/rpc"
     }
   }
 }
 ```
 
 Then I (Claude) can:
+
 1. Read your Figma file via AIP
 2. Generate React code
 3. Test it via Playwright MCP
@@ -105,12 +110,12 @@ Create `services/playwright` that wraps Playwright MCP in AIP protocol:
 
 ```typescript
 // services/playwright/src/index.ts
-import { AIPServer } from '@vaeshkar/aip-core';
-import { spawn } from 'child_process';
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { AIPServer } from "@vaeshkar/aip-core";
+import { spawn } from "child_process";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 
 // Start Playwright MCP internally
-const mcpProcess = spawn('npx', ['@playwright/mcp@latest', '--port', '8932']);
+const mcpProcess = spawn("npx", ["@playwright/mcp@latest", "--port", "8932"]);
 
 // Create MCP client
 const mcpClient = new Client(/* ... */);
@@ -118,30 +123,36 @@ await mcpClient.connect(/* ... */);
 
 // Create AIP server
 const aipServer = new AIPServer({
-  name: 'playwright',
-  version: '1.0.0'
+  name: "playwright",
+  version: "1.0.0",
 });
 
 // Bridge: AIP tool → MCP tool
-aipServer.registerTool({
-  name: 'playwright.navigate',
-  description: 'Navigate to URL',
-  schema: { /* ... */ }
-}, async (args) => {
-  // Call MCP tool
-  return await mcpClient.callTool({
-    name: 'browser_navigate',
-    arguments: args
-  });
-});
+aipServer.registerTool(
+  {
+    name: "playwright.navigate",
+    description: "Navigate to URL",
+    schema: {
+      /* ... */
+    },
+  },
+  async (args) => {
+    // Call MCP tool
+    return await mcpClient.callTool({
+      name: "browser_navigate",
+      arguments: args,
+    });
+  }
+);
 
 // Register all other tools...
-aipServer.start({ port: 3002 });
+aipServer.start({ port: 65002 });
 ```
 
 Now you have:
-- **AIP Figma** on port 3001
-- **AIP Playwright** on port 3002
+
+- **AIP Figma** on port 65001
+- **AIP Playwright** on port 65002
 - **Both use same protocol!**
 
 ---
@@ -153,12 +164,14 @@ Now you have:
 **Use Option B** - Install Playwright MCP in Claude Desktop
 
 **Why:**
+
 - ✅ Works immediately
 - ✅ No code needed
 - ✅ I can use both Figma AIP and Playwright MCP
 - ✅ Perfect for testing the workflow
 
 **Steps:**
+
 1. Add Playwright MCP to Claude Desktop config
 2. Restart Claude Desktop
 3. Tell me: "Read this Figma file and test it with Playwright"
@@ -171,12 +184,14 @@ Now you have:
 **Build Option C** - AIP Playwright Service
 
 **Why:**
+
 - ✅ Unified protocol (everything is AIP)
 - ✅ Works with any LLM (not just Claude)
 - ✅ Can be published to npm
 - ✅ Part of your AIP ecosystem
 
 **Timeline:**
+
 - Proof of Concept: **Today** (Option B)
 - Production Service: **Next week** (Option C)
 
@@ -185,6 +200,7 @@ Now you have:
 ## 📋 **The Complete Workflow (Option B)**
 
 ### **You:**
+
 ```
 "Hey Claude, I need to build a dashboard.
 
@@ -200,10 +216,11 @@ https://www.figma.com/design/67m7ehMq38gcTJcNMHWTCa/MAREVAL
 ```
 
 ### **Me (Claude):**
+
 ```
 Step 1: Reading Figma file...
 ✅ Got navbar design
-✅ Got button styles  
+✅ Got button styles
 ✅ Got color palette
 
 Step 2: Generating React components...
@@ -268,10 +285,11 @@ Report Results
 ### **Immediate (Proof of Concept):**
 
 1. **Install Playwright MCP in Claude Desktop**
+
    ```bash
    # Edit config file
    code ~/Library/Application\ Support/Claude/claude_desktop_config.json
-   
+
    # Add Playwright MCP
    {
      "mcpServers": {
@@ -281,7 +299,7 @@ Report Results
        }
      }
    }
-   
+
    # Restart Claude Desktop
    ```
 
@@ -314,16 +332,19 @@ Report Results
 ## 🎉 **Summary**
 
 ### **What We Have:**
+
 - ✅ AIP Figma Service (working!)
 - ✅ Playwright MCP Server (working!)
 - ✅ Both running locally
 
 ### **What We Need:**
+
 - 🔧 Proper MCP client (use SDK or Claude Desktop)
 - 🔧 Test the complete workflow
 - 🔧 Build AIP Playwright service (later)
 
 ### **Recommendation:**
+
 **Use Claude Desktop with both services** - Proof of Concept works TODAY! 🚀
 
 ---
@@ -331,4 +352,3 @@ Report Results
 **Dennis, ready to test this?** 😊
 
 Just add Playwright MCP to your Claude Desktop config and we can run the complete workflow right now!
-

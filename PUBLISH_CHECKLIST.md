@@ -31,6 +31,7 @@ curl -H "X-Figma-Token: YOUR_TOKEN" \
 ```
 
 If this returns your user info, the token is valid. If not, regenerate it:
+
 1. Go to https://www.figma.com/settings
 2. Delete old token
 3. Create new token
@@ -39,6 +40,7 @@ If this returns your user info, the token is valid. If not, regenerate it:
 ### **2. Make the File Public (or use a different file)**
 
 The file `Ml7RPTviH7YoellUOEQ9h1` returned 403. Either:
+
 - Make it public in Figma
 - Use a different file you have access to
 - Create a test file
@@ -105,19 +107,22 @@ aip-figma
 ## 🎯 **Quick Commands**
 
 ### **Build Everything**
+
 ```bash
 npm run build
 ```
 
 ### **Test Figma Service Locally**
+
 ```bash
 cd services/figma
 npm start
 ```
 
 ### **Test with curl**
+
 ```bash
-curl -X POST http://localhost:3001/aip/v1/rpc \
+curl -X POST http://localhost:65001/aip/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -128,12 +133,14 @@ curl -X POST http://localhost:3001/aip/v1/rpc \
 ```
 
 ### **Publish to npm**
+
 ```bash
 cd services/figma
 npm publish --access public
 ```
 
 ### **Push to GitHub**
+
 ```bash
 git add .
 git commit -m "Your message"
@@ -145,12 +152,14 @@ git push
 ## 🔍 **What to Check**
 
 ### **Before Committing**:
+
 - [ ] `.env.local` is NOT in git (check with `git status`)
 - [ ] All TypeScript compiles (`npm run build`)
 - [ ] Service starts successfully (`npm start`)
 - [ ] No sensitive data in code
 
 ### **Before Publishing to npm**:
+
 - [ ] Package name is correct: `@vaeshkar/aip-figma`
 - [ ] Version is correct: `1.0.0`
 - [ ] License is correct: `AGPL-3.0-or-later`
@@ -158,6 +167,7 @@ git push
 - [ ] README is up to date
 
 ### **After Publishing**:
+
 - [ ] Check npm page: https://www.npmjs.com/package/@vaeshkar/aip-figma
 - [ ] Test global install: `npm install -g @vaeshkar/aip-figma`
 - [ ] Test CLI command: `aip-figma`
@@ -169,6 +179,7 @@ git push
 ### **API Token Security**
 
 Your `.env.local` contains:
+
 ```
 FIGMA_API_KEY="W3pEprpvmjENm6kTINhF8X"
 FIGMA_CLIENT_SECRET="FW0TKBM2SVoFtE08UBGM2WFCjoDoWT"
@@ -177,6 +188,7 @@ FIGMA_CLIENT_SECRET="FW0TKBM2SVoFtE08UBGM2WFCjoDoWT"
 **This file is in `.gitignore` and will NOT be committed.** ✅
 
 But you should still:
+
 1. **Regenerate these tokens** after testing (they're visible in this conversation)
 2. **Never share them** publicly
 3. **Use environment variables** in production
@@ -184,6 +196,7 @@ But you should still:
 ### **File Access Issue**
 
 The 403 error means:
+
 - The token doesn't have access to file `Ml7RPTviH7YoellUOEQ9h1`
 - The file might be private
 - The token might be invalid
@@ -225,6 +238,7 @@ Documentation:
 ### **Announce It!**
 
 Share on:
+
 - GitHub Discussions
 - Twitter/X
 - LinkedIn
@@ -282,4 +296,3 @@ If you run into issues:
 **Dennis, you're about to launch something awesome!** 🚀
 
 AIP is the future of AI-service integration. Let's get it online! 💪
-

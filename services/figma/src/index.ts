@@ -13,6 +13,11 @@ import { AIPServer } from "./server/AIPServer";
 import { HTTPTransport } from "./transport/HTTPTransport";
 import type { ToolCapability } from "./schema/aip-schema";
 import { FigmaClient } from "./figma-client";
+import {
+  allocatePort,
+  getRecommendedPort,
+  formatPortAllocationResult,
+} from "./utils/port-manager";
 
 // Load environment variables
 dotenv.config();
@@ -488,40 +493,61 @@ server.registerTool(getFileVersionsTool, async (args) => {
 // Start HTTP Transport
 // ============================================================================
 
-const port = parseInt(process.env.PORT || "3001");
+// Dynamic port allocation
+const preferredPort = process.env.PORT
+  ? parseInt(process.env.PORT)
+  : getRecommendedPort("figma");
 const host = process.env.HOST || "0.0.0.0";
 
-const transport = new HTTPTransport(server, {
-  port,
-  host,
-  path: "/aip/v1/rpc",
-  cors: true,
-});
+console.log("\n🔌 Allocating port...");
+console.log(`   Preferred port: ${preferredPort}`);
 
-transport.listen().then(() => {
-  console.log("\n🎨 Figma AIP Service started successfully!\n");
+allocatePort({
+  preferredPort,
+  serviceName: "figma",
+  killSameService: true,
+})
+  .then((result) => {
+    console.log(formatPortAllocationResult(result));
 
-  console.log("📋 Available tools:");
+    const transport = new HTTPTransport(server, {
+      port: result.port,
+      host,
+      path: "/aip/v1/rpc",
+      cors: true,
+    });
 
-  const capabilities = server.getCapabilities();
-  capabilities.forEach((cap) => {
-    console.log(`  - ${cap.name}: ${cap.description}`);
+    return transport.listen().then(() => result.port);
+  })
+  .then((port) => {
+    console.log("\n🎨 Figma AIP Service started successfully!\n");
+
+    console.log("📋 Available tools:");
+
+    const capabilities = server.getCapabilities();
+    capabilities.forEach((cap) => {
+      console.log(`  - ${cap.name}: ${cap.description}`);
+    });
+
+    console.log("\n🔗 Endpoints:");
+    console.log(`  - Health: http://${host}:${port}/health`);
+    console.log(`  - RPC: http://${host}:${port}/aip/v1/rpc`);
+
+    console.log("\n📖 Example:");
+    console.log(`  curl -X POST http://localhost:${port}/aip/v1/rpc \\`);
+    console.log('    -H "Content-Type: application/json" \\');
+    console.log(
+      '    -d \'{"jsonrpc":"2.0","id":"1","method":"aip.tool.invoke","params":{"tool":"figma.getFile","arguments":{"fileKey":"YOUR_FILE_KEY"}}}\''
+    );
+
+    console.log("\n💡 Tip: Just pass the file key directly to any tool!");
+    console.log("   No configuration files needed!\n");
+  })
+  .catch((error) => {
+    console.error("\n❌ Failed to start Figma AIP service:");
+    console.error(error.message);
+    process.exit(1);
   });
-
-  console.log("\n🔗 Endpoints:");
-  console.log(`  - Health: http://${host}:${port}/health`);
-  console.log(`  - RPC: http://${host}:${port}/aip/v1/rpc`);
-
-  console.log("\n📖 Example:");
-  console.log(`  curl -X POST http://localhost:${port}/aip/v1/rpc \\`);
-  console.log('    -H "Content-Type: application/json" \\');
-  console.log(
-    '    -d \'{"jsonrpc":"2.0","id":"1","method":"aip.tool.invoke","params":{"tool":"figma.getFile","arguments":{"fileKey":"YOUR_FILE_KEY"}}}\''
-  );
-
-  console.log("\n💡 Tip: Just pass the file key directly to any tool!");
-  console.log("   No configuration files needed!\n");
-});
 
 // Cleanup on exit
 process.on("SIGINT", () => {
